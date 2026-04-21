@@ -1,0 +1,145 @@
+.font-display {
+    font-family: 'Outfit', sans-serif;
+}
+
+.font-body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Fade In Animation */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-in {
+    animation: fade-in 0.7s ease-out forwards;
+}
+
+/* Fade In Up Animation */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Slide In from Left */
+@keyframes slide-in-left {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide In from Right */
+@keyframes slide-in-right {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Pulse Animation */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(31, 162, 225, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(31, 162, 225, 0.8);
+    }
+}
+
+/* Apply animations */
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-fade-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-slide-left {
+    animation: slide-in-left 0.8s ease-out forwards;
+}
+
+.animate-slide-right {
+    animation: slide-in-right 0.8s ease-out forwards;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Staggered animations for cards */
+.feature-card {
+    animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.feature-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.feature-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.feature-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+/* Smooth transitions */
+button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0px);
+}
+
+/* Enhanced card hover effect */
+.card-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo pulse on load */
+.logo-animate {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
