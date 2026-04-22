@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderPlan | Your Itinerary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1fa2e1',
+                        secondary: '#10b47a',
+                        accent: '#f5b957',
+                        background: '#f8fafc',
+                        foreground: '#0f172a',
+                        muted: '#f1f5f9',
+                        'muted-foreground': '#64748b'
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="relative min-h-screen overflow-x-hidden bg-background text-foreground font-body antialiased">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-primary/30 to-background/90"></div>
+        <img
+            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2021&q=80"
+            alt="Scenic valley travel background"
+            class="h-full w-full object-cover"
+        >
+    </div>
+
+    <main class="relative z-10 mx-auto max-w-4xl px-6 py-10 sm:py-16">
+        <div class="mb-8 flex items-center justify-between gap-4">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-wide text-primary">Your Itinerary</p>
+                <h1 class="font-display text-4xl font-extrabold text-white drop-shadow-md sm:text-6xl">Your Saved Trip Details</h1>
+                <p class="mt-2 text-white/90">This page is read-only. Use the button below to return and make updates.</p>
+            </div>
+            <a href="index.html" class="rounded-full border border-white/80 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-white">Back to Home</a>
+        </div>
+
+        <section>
+            <div id="itinerary-view" class="grid gap-5 sm:grid-cols-2">
+                <label class="block sm:col-span-2">
+                    <span class="mb-2 block text-sm font-semibold text-white">Trip Name</span>
+                    <input type="text" name="tripName" readonly placeholder="Not set yet" class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
+                </label>
+
+                <label class="block">
+                    <span class="mb-2 block text-sm font-semibold text-white">Destination</span>
+                    <input type="text" name="destination" readonly placeholder="Not set yet" class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
+                </label>
+
+                <label class="block">
+                    <span class="mb-2 block text-sm font-semibold text-white">Travelers</span>
+                    <input type="number" name="travelers" readonly class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
+                </label>
+
+                <label class="block">
+                    <span class="mb-2 block text-sm font-semibold text-white">Start Date</span>
+                    <input type="date" name="startDate" readonly class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
+                </label>
+
+                <label class="block">
+                    <span class="mb-2 block text-sm font-semibold text-white">End Date</span>
+                    <input type="date" name="endDate" readonly class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
+                </label>
+
+                <label class="block sm:col-span-2">
+                    <span class="mb-2 block text-sm font-semibold text-white">Budget</span>
+                    <input type="text" name="budget" readonly placeholder="Not set yet" class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
+                </label>
+
+                <label class="block sm:col-span-2">
+                    <span class="mb-2 block text-sm font-semibold text-white">What do you want to do?</span>
+                    <textarea rows="4" name="activities" readonly placeholder="Not set yet" class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none"></textarea>
+                </label>
+
+                <div class="sm:col-span-2 flex flex-wrap items-center gap-3 pt-2">
+                    <a href="builder.html" class="rounded-full bg-secondary px-6 py-3 font-semibold text-white transition hover:bg-secondary/90">Back To Builder To Edit</a>
+                    <p class="text-sm text-white/80">Changes can be made on the builder page and will appear here.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="js/main.js"></script>
+</body>
+</html>
