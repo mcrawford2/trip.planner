@@ -27,9 +27,37 @@
             }
         };
     </script>
+    <style>
+        @media print {
+            body {
+                background: #ffffff;
+                color: #0f172a;
+            }
+
+            .print-hide {
+                display: none !important;
+            }
+
+            .print-shell {
+                max-width: none !important;
+                padding: 0 !important;
+            }
+
+            .print-card {
+                border: 1px solid #cbd5e1 !important;
+                background: #ffffff !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+            }
+
+            #itinerary-view p {
+                color: #0f172a !important;
+            }
+        }
+    </style>
 </head>
 <body class="relative min-h-screen overflow-x-hidden bg-background text-foreground font-body antialiased">
-    <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 z-0 print-hide">
         <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-primary/30 to-background/90"></div>
         <img
             src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2021&q=80"
@@ -38,56 +66,77 @@
         >
     </div>
 
-    <main class="relative z-10 mx-auto max-w-4xl px-6 py-10 sm:py-16">
+    <main class="print-shell relative z-10 mx-auto max-w-5xl px-6 py-10 sm:py-16">
         <div class="mb-8 flex items-center justify-between gap-4">
             <div>
-                <p class="text-sm font-semibold uppercase tracking-wide text-primary">Your Itinerary</p>
-                <h1 class="font-display text-4xl font-extrabold text-white drop-shadow-md sm:text-6xl">Your Saved Trip Details</h1>
-                <p class="mt-2 text-white/90">This page is read-only. Use the button below to return and make updates.</p>
+                <p class="text-sm font-semibold uppercase tracking-wide text-primary">Your Saved Trip Details</p>
+                <h1 id="trip-title" class="font-display text-4xl font-extrabold text-white drop-shadow-md sm:text-6xl">Your Itinerary</h1>
+                <p class="mt-3 text-base text-white/90 sm:text-lg">This page is read-only. Use the button below to return and make updates.</p>
             </div>
-            <a href="index.html" class="rounded-full border border-white/80 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-white">Back to Home</a>
+            <a href="index.html" class="print-hide rounded-full border border-white/80 bg-white/90 px-5 py-2.5 text-base font-semibold text-slate-700 hover:bg-white">Back to Home</a>
         </div>
 
-        <section>
+        <section class="print-card rounded-3xl border border-white/25 bg-slate-950/45 p-5 shadow-2xl backdrop-blur-sm sm:p-8">
             <div id="itinerary-view" class="grid gap-5 sm:grid-cols-2">
-                <label class="block sm:col-span-2">
-                    <span class="mb-2 block text-sm font-semibold text-white">Trip Name</span>
-                    <input type="text" name="tripName" readonly placeholder="Not set yet" class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
-                </label>
+                <article class="border-b border-white/25 pb-4 sm:col-span-2">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Destination</p>
+                    <p data-field="destination" class="mt-1 text-2xl font-semibold text-white sm:text-3xl">Not set yet</p>
+                </article>
 
-                <label class="block">
-                    <span class="mb-2 block text-sm font-semibold text-white">Destination</span>
-                    <input type="text" name="destination" readonly placeholder="Not set yet" class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
-                </label>
+                <article class="border-b border-white/25 pb-4">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Travelers</p>
+                    <p data-field="travelers" class="mt-1 text-2xl font-semibold text-white sm:text-3xl">Not set yet</p>
+                </article>
 
-                <label class="block">
-                    <span class="mb-2 block text-sm font-semibold text-white">Travelers</span>
-                    <input type="number" name="travelers" readonly class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
-                </label>
+                <article class="border-b border-white/25 pb-4">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Budget</p>
+                    <p data-field="budget" class="mt-1 text-2xl font-semibold text-white sm:text-3xl">Not set yet</p>
+                </article>
 
-                <label class="block">
-                    <span class="mb-2 block text-sm font-semibold text-white">Start Date</span>
-                    <input type="date" name="startDate" readonly class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
-                </label>
+                <article class="border-b border-white/25 pb-4">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Start Date</p>
+                    <p data-field="startDate" class="mt-1 text-2xl font-semibold text-white sm:text-3xl">Not set yet</p>
+                </article>
 
-                <label class="block">
-                    <span class="mb-2 block text-sm font-semibold text-white">End Date</span>
-                    <input type="date" name="endDate" readonly class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
-                </label>
+                <article class="border-b border-white/25 pb-4">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">End Date</p>
+                    <p data-field="endDate" class="mt-1 text-2xl font-semibold text-white sm:text-3xl">Not set yet</p>
+                </article>
 
-                <label class="block sm:col-span-2">
-                    <span class="mb-2 block text-sm font-semibold text-white">Budget</span>
-                    <input type="text" name="budget" readonly placeholder="Not set yet" class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none" />
-                </label>
+                <article class="sm:col-span-2 pt-2">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Planned Activities</p>
+                    <p data-field="activities" class="mt-2 whitespace-pre-wrap text-xl leading-relaxed text-white sm:text-2xl">Not set yet</p>
+                </article>
 
-                <label class="block sm:col-span-2">
-                    <span class="mb-2 block text-sm font-semibold text-white">What do you want to do?</span>
-                    <textarea rows="4" name="activities" readonly placeholder="Not set yet" class="w-full rounded-xl border border-slate-300 bg-white/95 px-4 py-3 text-slate-900 outline-none"></textarea>
-                </label>
+                <article id="flight-info-section" class="hidden border-t border-white/25 pt-4 sm:col-span-2">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Flight Information</p>
+                    <div id="flight-list" class="mt-3 grid gap-4"></div>
+                </article>
 
-                <div class="sm:col-span-2 flex flex-wrap items-center gap-3 pt-2">
-                    <a href="builder.html" class="rounded-full bg-secondary px-6 py-3 font-semibold text-white transition hover:bg-secondary/90">Back To Builder To Edit</a>
-                    <p class="text-sm text-white/80">Changes can be made on the builder page and will appear here.</p>
+                <article id="hotel-info-section" class="hidden border-t border-white/25 pt-4 sm:col-span-2">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Hotel Information</p>
+                    <div id="hotel-list" class="mt-3 grid gap-4"></div>
+                </article>
+
+                <article id="embassy-info-section" class="hidden border-t border-white/25 pt-4 sm:col-span-2">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Embassy Information</p>
+                    <div id="embassy-list" class="mt-3 grid gap-4"></div>
+                </article>
+
+                <article id="visa-info-section" class="hidden border-t border-white/25 pt-4 sm:col-span-2">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Visa Information</p>
+                    <div id="visa-list" class="mt-3 grid gap-4"></div>
+                </article>
+
+                <article class="hidden border-t border-white/25 pt-4 sm:col-span-2" data-optional-section="healthInformation">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Health Information</p>
+                    <p data-field="healthInformation" class="mt-2 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">Not set yet</p>
+                </article>
+
+                <div class="sm:col-span-2 mt-4 flex flex-wrap items-center gap-4 border-t border-white/20 pt-5">
+                    <button id="save-pdf-btn" type="button" class="print-hide rounded-full bg-accent px-7 py-3 text-lg font-semibold text-slate-900 transition hover:bg-accent/90">Save Itinerary as PDF</button>
+                    <a href="builder.html" class="rounded-full bg-secondary px-7 py-3 text-lg font-semibold text-white transition hover:bg-secondary/90">Back To Builder To Edit</a>
+                    <p class="text-base text-white/80">Changes can be made on the builder page and will appear here.</p>
                 </div>
             </div>
         </section>

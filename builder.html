@@ -52,32 +52,32 @@
             <form id="trip-builder-form" action="itinerary.html" class="grid gap-5 sm:grid-cols-2">
                 <label class="block sm:col-span-2">
                     <span class="mb-2 block text-sm font-semibold text-white">Trip Name</span>
-                    <input type="text" name="tripName" placeholder="e.g., Japan Spring Adventure" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                    <input type="text" name="tripName" required placeholder="e.g., Japan Spring Adventure" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
 
                 <label class="block">
                     <span class="mb-2 block text-sm font-semibold text-white">Destination</span>
-                    <input type="text" name="destination" placeholder="e.g., Tokyo, Japan" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                    <input type="text" name="destination" required placeholder="e.g., Tokyo, Japan" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
 
                 <label class="block">
                     <span class="mb-2 block text-sm font-semibold text-white">Travelers</span>
-                    <input type="number" name="travelers" min="1" value="2" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                    <input type="number" name="travelers" required min="1" value="2" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
 
                 <label class="block">
                     <span class="mb-2 block text-sm font-semibold text-white">Start Date</span>
-                    <input type="date" name="startDate" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                    <input type="date" name="startDate" required class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
 
                 <label class="block">
                     <span class="mb-2 block text-sm font-semibold text-white">End Date</span>
-                    <input type="date" name="endDate" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                    <input type="date" name="endDate" required class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
 
                 <label class="block sm:col-span-2">
                     <span class="mb-2 block text-sm font-semibold text-white">Budget</span>
-                    <input type="text" name="budget" placeholder="e.g., $2,500" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                    <input type="text" name="budget" required placeholder="e.g., $2,500" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
 
                 <label class="block sm:col-span-2">
@@ -85,8 +85,165 @@
                     <textarea rows="4" name="activities" placeholder="Food tours, museums, beach days, hiking..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
                 </label>
 
+                <div class="sm:col-span-2 rounded-2xl border border-white/30 bg-black/15 p-4 sm:p-5">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-white/90">Optional Add-Ons</p>
+                    <p class="mt-1 text-sm text-white/80">Click any option to add details to your itinerary record.</p>
+
+                    <div class="mt-4 flex flex-wrap gap-3">
+                        <button type="button" data-toggle-target="optional-flight" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Flight Information</button>
+                        <button type="button" data-toggle-target="optional-hotel" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Hotel Information</button>
+                        <button type="button" data-toggle-target="optional-embassy" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Embassy Information</button>
+                        <button type="button" data-toggle-target="optional-visa" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Visa Information</button>
+                        <button type="button" data-toggle-target="optional-health" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Health Information</button>
+                    </div>
+
+                    <div class="mt-4 grid gap-4">
+                        <div id="optional-flight" class="hidden">
+                            <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                                <p class="text-sm font-semibold text-white">Flight Information</p>
+                                <button id="add-flight-btn" type="button" class="rounded-full border border-white/70 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-white/20">Add Another Flight</button>
+                            </div>
+                            <div id="flight-entries" class="grid gap-4">
+                                <div data-repeat-entry="flight" class="rounded-xl border border-white/25 bg-black/15 p-4 sm:p-5">
+                                    <p data-entry-heading class="mb-3 text-sm font-semibold text-white">Flight</p>
+                                    <div class="grid gap-4 sm:grid-cols-2">
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Airline</span>
+                                            <input type="text" name="flightAirline[]" placeholder="e.g., Delta" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Flight Number</span>
+                                            <input type="text" name="flightNumber[]" placeholder="e.g., DL 123" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Departure City</span>
+                                            <input type="text" name="flightDepartureCity[]" placeholder="e.g., New York" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Arrival City</span>
+                                            <input type="text" name="flightArrivalCity[]" placeholder="e.g., Paris" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Times</span>
+                                            <input type="text" name="flightTimes[]" placeholder="e.g., Departs 8:15 AM, Arrives 10:40 PM" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Flight Cost</span>
+                                            <input type="text" name="flightCost[]" placeholder="e.g., $845" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block sm:col-span-2">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Booking Details</span>
+                                            <textarea rows="3" name="flightBookingDetails[]" placeholder="Booking reference, seat details, notes..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="optional-hotel" class="hidden">
+                            <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                                <p class="text-sm font-semibold text-white">Hotel Information</p>
+                                <button id="add-hotel-btn" type="button" class="rounded-full border border-white/70 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-white/20">Add Another Hotel</button>
+                            </div>
+                            <div id="hotel-entries" class="grid gap-4">
+                                <div data-repeat-entry="hotel" class="rounded-xl border border-white/25 bg-black/15 p-4 sm:p-5">
+                                    <p data-entry-heading class="mb-3 text-sm font-semibold text-white">Hotel</p>
+                                    <div class="grid gap-4 sm:grid-cols-2">
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Hotel Name</span>
+                                            <input type="text" name="hotelName[]" placeholder="e.g., Grand Palace Hotel" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Dates</span>
+                                            <input type="text" name="hotelDates[]" placeholder="e.g., May 12 - May 16" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block sm:col-span-2">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Address</span>
+                                            <input type="text" name="hotelAddress[]" placeholder="Street, city, country" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block sm:col-span-2">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Check-In Details</span>
+                                            <textarea rows="3" name="hotelCheckInDetails[]" placeholder="Check-in time, confirmation number, front desk notes..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="optional-embassy" class="hidden">
+                            <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                                <p class="text-sm font-semibold text-white">Embassy Information</p>
+                                <button id="add-embassy-btn" type="button" class="rounded-full border border-white/70 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-white/20">Add Another Embassy</button>
+                            </div>
+                            <div id="embassy-entries" class="grid gap-4">
+                                <div data-repeat-entry="embassy" class="rounded-xl border border-white/25 bg-black/15 p-4 sm:p-5">
+                                    <p data-entry-heading class="mb-3 text-sm font-semibold text-white">Embassy</p>
+                                    <div class="grid gap-4 sm:grid-cols-2">
+                                        <label class="block sm:col-span-2">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Embassy Address</span>
+                                            <input type="text" name="embassyAddress[]" placeholder="Street, city, country" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Emergency Contact Numbers</span>
+                                            <input type="text" name="embassyEmergencyNumbers[]" placeholder="e.g., +81-3-1234-5678" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Hours</span>
+                                            <input type="text" name="embassyHours[]" placeholder="e.g., Mon-Fri 9:00 AM - 5:00 PM" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="optional-visa" class="hidden">
+                            <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                                <p class="text-sm font-semibold text-white">Visa Information</p>
+                                <button id="add-visa-btn" type="button" class="rounded-full border border-white/70 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-white/20">Add Another Visa</button>
+                            </div>
+                            <div id="visa-entries" class="grid gap-4">
+                                <div data-repeat-entry="visa" class="rounded-xl border border-white/25 bg-black/15 p-4 sm:p-5">
+                                    <p data-entry-heading class="mb-3 text-sm font-semibold text-white">Visa</p>
+                                    <div class="grid gap-4 sm:grid-cols-2">
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Visa Type</span>
+                                            <input type="text" name="visaType[]" placeholder="e.g., Tourist Visa" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Validity Dates</span>
+                                            <input type="text" name="visaValidityDates[]" placeholder="e.g., Jun 1, 2026 - Aug 30, 2026" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block sm:col-span-2">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Documentation Notes</span>
+                                            <textarea rows="3" name="visaDocumentationNotes[]" placeholder="Required documents, processing notes, appointment details..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label id="optional-health" class="hidden block">
+                            <span class="mb-2 block text-sm font-semibold text-white">Health Information</span>
+                            <textarea rows="3" name="healthInformation" placeholder="Insurance details, medications, clinic/hospital contacts..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="sm:col-span-2 flex flex-wrap items-center gap-3 pt-2">
-                    <button type="submit" class="rounded-full bg-primary px-6 py-3 font-semibold text-white transition hover:bg-primary/90">Create My Itinerary</button>
+                    <button type="submit" class="rounded-full bg-primary px-10 py-4 text-lg font-extrabold uppercase tracking-wide text-white transition hover:bg-primary/90">Create My Itinerary</button>
                     <p class="text-sm text-muted-foreground">You can edit everything later.</p>
                 </div>
             </form>
