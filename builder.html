@@ -55,10 +55,33 @@
                     <input type="text" name="tripName" required placeholder="e.g., Japan Spring Adventure" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
 
-                <label class="block">
-                    <span class="mb-2 block text-sm font-semibold text-white">Destination</span>
-                    <input type="text" name="destination" required placeholder="e.g., Tokyo, Japan" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
-                </label>
+                <div class="sm:col-span-2 rounded-2xl border border-white/30 bg-black/15 p-4 sm:p-5">
+                    <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                        <p class="text-sm font-semibold text-white">Destinations</p>
+                        <button id="add-destination-btn" type="button" class="rounded-full border border-white/70 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-white/20">Add Another Destination</button>
+                    </div>
+                    <div id="destination-entries" class="grid gap-4">
+                        <div data-repeat-entry="destination" class="rounded-xl border border-white/25 bg-black/15 p-4 sm:p-5">
+                            <p data-entry-heading class="mb-3 text-sm font-semibold text-white">Destination</p>
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <label class="block">
+                                    <span class="mb-2 block text-sm font-semibold text-white">City</span>
+                                    <input type="text" name="destinationCity[]" placeholder="e.g., Tokyo" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                </label>
+
+                                <label class="block">
+                                    <span class="mb-2 block text-sm font-semibold text-white">Country</span>
+                                    <input type="text" name="destinationCountry[]" placeholder="e.g., Japan" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                </label>
+
+                                <label class="block sm:col-span-2">
+                                    <span class="mb-2 block text-sm font-semibold text-white">Dates</span>
+                                    <input type="text" name="destinationDates[]" placeholder="e.g., Apr 12 - Apr 15" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <label class="block">
                     <span class="mb-2 block text-sm font-semibold text-white">Travelers</span>
@@ -92,6 +115,7 @@
                     <div class="mt-4 flex flex-wrap gap-3">
                         <button type="button" data-toggle-target="optional-flight" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Flight Information</button>
                         <button type="button" data-toggle-target="optional-hotel" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Hotel Information</button>
+                        <button type="button" data-toggle-target="optional-traveler" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Traveler Information</button>
                         <button type="button" data-toggle-target="optional-embassy" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Embassy Information</button>
                         <button type="button" data-toggle-target="optional-visa" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Visa Information</button>
                         <button type="button" data-toggle-target="optional-health" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Health Information</button>
@@ -140,6 +164,34 @@
                                         <label class="block sm:col-span-2">
                                             <span class="mb-2 block text-sm font-semibold text-white">Booking Details</span>
                                             <textarea rows="3" name="flightBookingDetails[]" placeholder="Booking reference, seat details, notes..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="optional-traveler" class="hidden">
+                            <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                                <p class="text-sm font-semibold text-white">Traveler Information</p>
+                                <button id="add-traveler-btn" type="button" class="rounded-full border border-white/70 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-white/20">Add Another Traveler</button>
+                            </div>
+                            <div id="traveler-entries" class="grid gap-4">
+                                <div data-repeat-entry="traveler" class="rounded-xl border border-white/25 bg-black/15 p-4 sm:p-5">
+                                    <p data-entry-heading class="mb-3 text-sm font-semibold text-white">Traveler</p>
+                                    <div class="grid gap-4 sm:grid-cols-2">
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Name</span>
+                                            <input type="text" name="travelerName[]" placeholder="e.g., Alex Johnson" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Phone Number</span>
+                                            <input type="tel" name="travelerPhone[]" placeholder="e.g., +1 555-123-4567" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block sm:col-span-2">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Other Important Info</span>
+                                            <textarea rows="3" name="travelerImportantInfo[]" placeholder="Passport number, emergency contact, dietary needs, notes..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
                                         </label>
                                     </div>
                                 </div>

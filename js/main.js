@@ -4,6 +4,8 @@
 	const itineraryView = document.querySelector("#itinerary-view");
 	const tripTitle = document.querySelector("#trip-title");
 	const savePdfButton = document.querySelector("#save-pdf-btn");
+	const travelerSection = document.querySelector("#traveler-info-section");
+	const travelerList = document.querySelector("#traveler-list");
 	const flightSection = document.querySelector("#flight-info-section");
 	const flightList = document.querySelector("#flight-list");
 	const hotelSection = document.querySelector("#hotel-info-section");
@@ -22,6 +24,8 @@
 		"flightCost",
 		"flightBookingDetails"
 	];
+	const destinationArrayKeys = ["destinationCity", "destinationCountry", "destinationDates"];
+	const travelerArrayKeys = ["travelerName", "travelerPhone", "travelerImportantInfo"];
 	const hotelArrayKeys = ["hotelName", "hotelAddress", "hotelDates", "hotelCheckInDetails"];
 	const embassyArrayKeys = ["embassyAddress", "embassyEmergencyNumbers", "embassyHours"];
 	const visaArrayKeys = ["visaType", "visaValidityDates", "visaDocumentationNotes"];
@@ -40,7 +44,11 @@
 			.replaceAll("'", "&#39;");
 	const hasTextContent = (value) => (typeof value === "string" ? value.trim().length > 0 : Boolean(value));
 	const getArrayValue = (savedData, key, index) =>
-		Array.isArray(savedData?.[key]) ? String(savedData[key][index] ?? "") : "";
+		Array.isArray(savedData?.[key])
+			? String(savedData[key][index] ?? "")
+			: index === 0 && typeof savedData?.[key] === "string"
+				? String(savedData[key])
+				: "";
 	const getMaxArrayLength = (savedData, keys) =>
 		keys.reduce((max, key) => {
 			const value = savedData?.[key];
@@ -117,7 +125,7 @@
 				return;
 			}
 
-			const field = container.querySelector(`[name="${key}"]`);
+			const field = container.querySelector(`[name="${key}"]`) ?? container.querySelector(`[name="${key}[]"]`);
 			if (!field) {
 				return;
 			}
@@ -203,6 +211,97 @@
 				cost: getArrayValue(savedData, "flightCost", index),
 				bookingDetails: getArrayValue(savedData, "flightBookingDetails", index)
 			};
+
+		const renderDestinationList = (savedData) => {
+			const destinationSection = document.querySelector("#destination-info-section");
+			const destinationList = document.querySelector("#destination-list");
+
+			if (!destinationSection || !destinationList) {
+				return;
+			}
+
+			const count = Math.max(getMaxArrayLength(savedData, destinationArrayKeys), hasTextContent(savedData?.destination) ? 1 : 0);
+			const entries = [];
+			for (let index = 0; index < count; index += 1) {
+				const city = getArrayValue(savedData, "destinationCity", index);
+				const country = getArrayValue(savedData, "destinationCountry", index);
+				const dates = getArrayValue(savedData, "destinationDates", index);
+				const legacyDestination = index === 0 ? getArrayValue(savedData, "destination", index) : "";
+				const hasPairedDestination = hasTextContent(city) || hasTextContent(country) || hasTextContent(dates);
+
+				if (hasPairedDestination) {
+					entries.push({ city, country, dates });
+					continue;
+				}
+
+				if (hasTextContent(legacyDestination)) {
+					entries.push({ legacyDestination });
+				}
+			}
+
+			if (entries.length === 0) {
+				destinationSection.classList.add("hidden");
+				destinationList.innerHTML = "";
+				return;
+			}
+
+			destinationSection.classList.remove("hidden");
+			destinationList.innerHTML = entries
+				.map(
+					(destination, index) => `
+					<div class="rounded-xl border border-white/20 bg-black/20 p-4 sm:p-5">
+						<p class="text-sm font-semibold uppercase tracking-[0.12em] text-white/80">Destination ${index + 1}</p>
+						<div class="mt-3 grid gap-3 sm:grid-cols-2">
+							<div><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">City</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(destination.legacyDestination ? destination.legacyDestination : destination.city || "Not set yet")}</p></div>
+							<div><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Country</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(destination.country || "Not set yet")}</p></div>
+							<div class="sm:col-span-2"><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Dates</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(destination.dates || "Not set yet")}</p></div>
+						</div>
+					</div>`
+				)
+				.join("");
+		};
+
+	const renderTravelerList = (savedData) => {
+		if (!travelerSection || !travelerList) {
+			return;
+		}
+
+		const count = getMaxArrayLength(savedData, travelerArrayKeys);
+		const entries = [];
+		for (let index = 0; index < count; index += 1) {
+			const entry = {
+				name: getArrayValue(savedData, "travelerName", index),
+				phone: getArrayValue(savedData, "travelerPhone", index),
+				importantInfo: getArrayValue(savedData, "travelerImportantInfo", index)
+			};
+
+			const hasContent = Object.values(entry).some((value) => hasTextContent(value));
+			if (hasContent) {
+				entries.push(entry);
+			}
+		}
+
+		if (entries.length === 0) {
+			travelerSection.classList.add("hidden");
+			travelerList.innerHTML = "";
+			return;
+		}
+
+		travelerSection.classList.remove("hidden");
+		travelerList.innerHTML = entries
+			.map(
+				(entry) => `
+				<div class="rounded-xl border border-white/20 bg-black/20 p-4 sm:p-5">
+					<p class="text-sm font-semibold uppercase tracking-[0.12em] text-white/80">Traveler</p>
+					<div class="mt-3 grid gap-3 sm:grid-cols-2">
+						<div><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Name</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(entry.name || "Not set yet")}</p></div>
+						<div><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Phone Number</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(entry.phone || "Not set yet")}</p></div>
+						<div class="sm:col-span-2"><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Other Important Info</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(entry.importantInfo || "Not set yet")}</p></div>
+					</div>
+				</div>`
+			)
+			.join("");
+	};
 
 			const hasContent = Object.values(entry).some((value) => hasTextContent(value));
 			if (hasContent) {
@@ -431,19 +530,26 @@
 	if (builderForm) {
 		const savedData = getSavedData();
 		const flightEntries = builderForm.querySelector("#flight-entries");
+		const destinationEntries = builderForm.querySelector("#destination-entries");
+		const travelerEntries = builderForm.querySelector("#traveler-entries");
 		const hotelEntries = builderForm.querySelector("#hotel-entries");
 		const embassyEntries = builderForm.querySelector("#embassy-entries");
 		const visaEntries = builderForm.querySelector("#visa-entries");
 		const optionalFlight = builderForm.querySelector("#optional-flight");
+		const optionalTraveler = builderForm.querySelector("#optional-traveler");
 		const optionalHotel = builderForm.querySelector("#optional-hotel");
 		const optionalEmbassy = builderForm.querySelector("#optional-embassy");
 		const optionalVisa = builderForm.querySelector("#optional-visa");
 		const optionalHealth = builderForm.querySelector("#optional-health");
+		const addDestinationButton = builderForm.querySelector("#add-destination-btn");
+		const addTravelerButton = builderForm.querySelector("#add-traveler-btn");
 		const addFlightButton = builderForm.querySelector("#add-flight-btn");
 		const addHotelButton = builderForm.querySelector("#add-hotel-btn");
 		const addEmbassyButton = builderForm.querySelector("#add-embassy-btn");
 		const addVisaButton = builderForm.querySelector("#add-visa-btn");
 
+		ensureRepeatEntryCount(destinationEntries, "Destination", getMaxArrayLength(savedData, destinationArrayKeys));
+		ensureRepeatEntryCount(travelerEntries, "Traveler", getMaxArrayLength(savedData, travelerArrayKeys));
 		ensureRepeatEntryCount(flightEntries, "Flight", getMaxArrayLength(savedData, flightArrayKeys));
 		ensureRepeatEntryCount(hotelEntries, "Hotel", getMaxArrayLength(savedData, hotelArrayKeys));
 		ensureRepeatEntryCount(embassyEntries, "Embassy", getMaxArrayLength(savedData, embassyArrayKeys));
@@ -455,6 +561,13 @@
 			const value = savedData?.[key];
 			return Array.isArray(value) ? value.some((item) => hasTextContent(item)) : hasTextContent(value);
 		});
+		const hasTravelerData = travelerArrayKeys.some((key) => {
+			const value = savedData?.[key];
+			return Array.isArray(value) ? value.some((item) => hasTextContent(item)) : hasTextContent(value);
+		});
+		if (optionalTraveler && hasTravelerData) {
+			optionalTraveler.classList.remove("hidden");
+		}
 		if (optionalFlight && hasFlightData) {
 			optionalFlight.classList.remove("hidden");
 		}
@@ -518,6 +631,20 @@
 			});
 		}
 
+		if (addDestinationButton) {
+			addDestinationButton.addEventListener("click", () => {
+				addRepeatEntry(destinationEntries, "Destination", true);
+				saveFormState(builderForm);
+			});
+		}
+
+		if (addTravelerButton) {
+			addTravelerButton.addEventListener("click", () => {
+				addRepeatEntry(travelerEntries, "Traveler", true);
+				saveFormState(builderForm);
+			});
+		}
+
 		if (addHotelButton) {
 			addHotelButton.addEventListener("click", () => {
 				addRepeatEntry(hotelEntries, "Hotel", true);
@@ -551,6 +678,8 @@
 		restoreDisplayFields(itineraryView);
 
 		const savedData = getSavedData();
+			renderDestinationList(savedData);
+		renderTravelerList(savedData);
 		if (tripTitle) {
 			tripTitle.textContent = savedData?.tripName ? String(savedData.tripName) : "Your Itinerary";
 		}
