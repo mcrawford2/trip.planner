@@ -49,10 +49,10 @@
 
 	const getSavedData = () => {
 		try {
-			const rawValue = localStorage.getItem(storageKey);
+			const rawValue = sessionStorage.getItem(storageKey);
 			return rawValue ? JSON.parse(rawValue) : null;
 		} catch (error) {
-			console.warn("Could not read trip form data from localStorage.", error);
+			console.warn("Could not read trip form data from sessionStorage.", error);
 			return null;
 		}
 	};
@@ -90,9 +90,9 @@
 
 	const saveFormState = (form) => {
 		try {
-			localStorage.setItem(storageKey, JSON.stringify(readFormState(form)));
+			sessionStorage.setItem(storageKey, JSON.stringify(readFormState(form)));
 		} catch (error) {
-			console.warn("Could not save trip form data to localStorage.", error);
+			console.warn("Could not save trip form data to sessionStorage.", error);
 		}
 	};
 
@@ -557,7 +557,16 @@
 
 		if (savePdfButton) {
 			savePdfButton.addEventListener("click", () => {
-				window.print();
+				const element = document.querySelector("main");
+				const opt = {
+					margin: [10, 10, 10, 10],
+					filename: `${savedData?.tripName || "WanderPlan-Itinerary"}.pdf`,
+					image: { type: "jpeg", quality: 0.98 },
+					html2canvas: { scale: 2, logging: false },
+					jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+					pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+				};
+				html2pdf().set(opt).from(element).save();
 			});
 		}
 	}
