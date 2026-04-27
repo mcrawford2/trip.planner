@@ -29,6 +29,79 @@
         };
     </script>
     <style>
+        body.pdf-exporting {
+            background: #ffffff !important;
+            color: #000000 !important;
+        }
+
+        body.pdf-exporting .print-hide {
+            display: none !important;
+        }
+
+        body.pdf-exporting,
+        body.pdf-exporting * {
+            color: #000000 !important;
+            background: #ffffff !important;
+            text-shadow: none !important;
+            box-shadow: none !important;
+        }
+
+        body.pdf-exporting .print-card,
+        body.pdf-exporting #summary-dashboard article,
+        body.pdf-exporting #itinerary-view article,
+        body.pdf-exporting #itinerary-view div {
+            border-color: #000000 !important;
+            backdrop-filter: none !important;
+        }
+
+        body.pdf-exporting .print-card {
+            margin-top: 0 !important;
+            padding-top: 12px !important;
+            min-height: 0 !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+
+        body.pdf-exporting .print-shell,
+        body.pdf-exporting #summary-dashboard,
+        body.pdf-exporting #itinerary-view,
+        body.pdf-exporting #itinerary-view > article,
+        body.pdf-exporting #itinerary-view > div {
+            min-height: 0 !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+        }
+
+        body.pdf-exporting #summary-dashboard,
+        body.pdf-exporting #itinerary-view {
+            break-inside: auto !important;
+            page-break-inside: auto !important;
+        }
+
+        body.pdf-exporting #summary-dashboard {
+            display: block !important;
+        }
+
+        body.pdf-exporting #itinerary-view {
+            display: block !important;
+        }
+
+        body.pdf-exporting #summary-dashboard > article,
+        body.pdf-exporting #itinerary-view > article,
+        body.pdf-exporting #itinerary-view > div {
+            display: block !important;
+            width: 100% !important;
+            margin-bottom: 10px !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+
+        body.pdf-exporting #itinerary-view > div:last-child,
+        body.pdf-exporting #itinerary-view > article:last-child {
+            margin-bottom: 0 !important;
+        }
+
         @media print {
             body {
                 background: #ffffff;
@@ -42,6 +115,9 @@
             .print-shell {
                 max-width: none !important;
                 padding: 0 !important;
+                min-height: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
             }
 
             .print-card {
@@ -53,6 +129,25 @@
 
             #itinerary-view p {
                 color: #0f172a !important;
+            }
+
+            #summary-dashboard article,
+            #itinerary-view > article,
+            #itinerary-view > div {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            #summary-dashboard,
+            #itinerary-view {
+                display: block !important;
+            }
+
+            #summary-dashboard > article,
+            #itinerary-view > article,
+            #itinerary-view > div {
+                display: block !important;
+                width: 100% !important;
             }
         }
     </style>
@@ -78,6 +173,40 @@
         </div>
 
         <section class="print-card rounded-3xl border border-white/25 bg-slate-950/45 p-5 shadow-2xl backdrop-blur-sm sm:p-8">
+            <div id="summary-dashboard" class="mb-5 grid gap-4 lg:grid-cols-4">
+                <article class="rounded-2xl border border-white/15 bg-white/10 p-4 text-white shadow-lg backdrop-blur-sm">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Destinations</p>
+                    <p id="summary-destinations" class="mt-2 text-3xl font-extrabold sm:text-4xl">0</p>
+                    <p class="mt-1 text-sm text-white/75">Planned stops in the trip</p>
+                </article>
+
+                <article class="rounded-2xl border border-white/15 bg-white/10 p-4 text-white shadow-lg backdrop-blur-sm">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Travelers</p>
+                    <p id="summary-travelers" class="mt-2 text-3xl font-extrabold sm:text-4xl">0</p>
+                    <p class="mt-1 text-sm text-white/75">People on the itinerary</p>
+                </article>
+
+                <article class="rounded-2xl border border-white/15 bg-white/10 p-4 text-white shadow-lg backdrop-blur-sm">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Trip Length</p>
+                    <p id="summary-trip-length" class="mt-2 text-3xl font-extrabold sm:text-4xl">Not set yet</p>
+                    <p id="summary-trip-range" class="mt-1 text-sm text-white/75">Add destination dates to calculate length</p>
+                </article>
+
+                <article class="rounded-2xl border border-white/15 bg-white/10 p-4 text-white shadow-lg backdrop-blur-sm lg:col-span-1">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Optional Completeness</p>
+                            <p id="summary-optional-completeness" class="mt-2 text-3xl font-extrabold sm:text-4xl">0%</p>
+                        </div>
+                        <p id="summary-optional-count" class="rounded-full border border-white/20 bg-black/20 px-3 py-1 text-xs font-semibold text-white/80 whitespace-nowrap">0 / 6</p>
+                    </div>
+                    <div class="mt-4 h-2 overflow-hidden rounded-full bg-white/15">
+                        <div id="summary-optional-progress" class="h-full w-0 rounded-full bg-accent transition-all duration-300"></div>
+                    </div>
+                    <p id="summary-optional-label" class="mt-2 text-sm text-white/75">No optional sections filled yet</p>
+                </article>
+            </div>
+
             <div id="itinerary-view" class="grid gap-5 sm:grid-cols-2">
                 <article id="destination-info-section" class="hidden border-b border-white/25 pb-4 sm:col-span-2">
                     <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Destinations</p>
@@ -92,16 +221,6 @@
                 <article class="border-b border-white/25 pb-4">
                     <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Budget</p>
                     <p data-field="budget" class="mt-1 text-2xl font-semibold text-white sm:text-3xl">Not set yet</p>
-                </article>
-
-                <article class="border-b border-white/25 pb-4">
-                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Start Date</p>
-                    <p data-field="startDate" class="mt-1 text-2xl font-semibold text-white sm:text-3xl">Not set yet</p>
-                </article>
-
-                <article class="border-b border-white/25 pb-4">
-                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-white/70">End Date</p>
-                    <p data-field="endDate" class="mt-1 text-2xl font-semibold text-white sm:text-3xl">Not set yet</p>
                 </article>
 
                 <article class="sm:col-span-2 pt-2">

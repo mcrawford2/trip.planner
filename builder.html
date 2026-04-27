@@ -74,9 +74,14 @@
                                     <input type="text" name="destinationCountry[]" placeholder="e.g., Japan" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                                 </label>
 
-                                <label class="block sm:col-span-2">
-                                    <span class="mb-2 block text-sm font-semibold text-white">Dates</span>
-                                    <input type="text" name="destinationDates[]" placeholder="e.g., Apr 12 - Apr 15" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                <label class="block">
+                                    <span class="mb-2 block text-sm font-semibold text-white">Start Date</span>
+                                    <input type="date" name="destinationStartDate[]" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                </label>
+
+                                <label class="block">
+                                    <span class="mb-2 block text-sm font-semibold text-white">End Date</span>
+                                    <input type="date" name="destinationEndDate[]" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                                 </label>
                             </div>
                         </div>
@@ -89,16 +94,6 @@
                 </label>
 
                 <label class="block">
-                    <span class="mb-2 block text-sm font-semibold text-white">Start Date</span>
-                    <input type="date" name="startDate" required class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
-                </label>
-
-                <label class="block">
-                    <span class="mb-2 block text-sm font-semibold text-white">End Date</span>
-                    <input type="date" name="endDate" required class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
-                </label>
-
-                <label class="block sm:col-span-2">
                     <span class="mb-2 block text-sm font-semibold text-white">Budget</span>
                     <input type="text" name="budget" required placeholder="e.g., $2,500" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
