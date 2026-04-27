@@ -1,5 +1,5 @@
 # What are you building? Who is it for? One or two sentences describing your project and the target user.
-A trip planner for college students to plan trips with a budget friendly mindset. Users can build a day-by-day itinerary, track their trip budget, and visualize their route on a map.
+A trip planner for college students to plan trips with a budget friendly mindset. Users can keep track of all important documents and create an itinerary.
 
 # Why? What motivates you to build this? What problem does it solve?
 Travel planning for college students is often a messy and scattered process, with multiple open computer tabs of different sites. Having one simgle tool focused on a target audience will make trip planning much easier and less stressful. It will also help college students, who generally are known to not have expendable financial resources, to keep track of their finances in a targeted way.

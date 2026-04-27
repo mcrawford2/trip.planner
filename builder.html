@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WanderPlan | Build Your Trip</title>
+    <!--Tailwind CSS and Google Fonts were configured by AI, but is still understood-->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!--Google Fonts added by AI-->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -28,9 +30,11 @@
         };
     </script>
 </head>
+<!--Same as in index.html, AI wrote class names that I chose not to adjust for specificity across different classes-->
 <body class="relative min-h-screen overflow-x-hidden bg-background text-foreground font-body antialiased">
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-primary/40 to-background/90"></div>
+        <!--Unsplash images were added by AI, but checked for correct src, alt, and classes-->
         <img
             src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80"
             alt="Scenic mountain travel view"
@@ -49,9 +53,11 @@
         </div>
 
         <section>
+            <!--AI also helped build the form, connect actions, and remmeber inputs across the builder.html and itinerary.html-->
             <form id="trip-builder-form" action="itinerary.html" class="grid gap-5 sm:grid-cols-2">
                 <label class="block sm:col-span-2">
                     <span class="mb-2 block text-sm font-semibold text-white">Trip Name</span>
+                    <!--AI wrote the placeholder texts across all input blocks-->
                     <input type="text" name="tripName" required placeholder="e.g., Japan Spring Adventure" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </label>
 
@@ -108,9 +114,11 @@
                     <p class="mt-1 text-sm text-white/80">Click any option to add details to your itinerary record.</p>
 
                     <div class="mt-4 flex flex-wrap gap-3">
+                        <!--written by AI, data-toggle-target keeps optional add-ons hidden until user choses for them to be visible-->
                         <button type="button" data-toggle-target="optional-flight" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Flight Information</button>
                         <button type="button" data-toggle-target="optional-hotel" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Hotel Information</button>
                         <button type="button" data-toggle-target="optional-traveler" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Traveler Information</button>
+                        <button type="button" data-toggle-target="optional-budget" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Budget Tracking</button>
                         <button type="button" data-toggle-target="optional-embassy" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Embassy Information</button>
                         <button type="button" data-toggle-target="optional-visa" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Visa Information</button>
                         <button type="button" data-toggle-target="optional-health" class="rounded-full border border-white/65 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Health Information</button>
@@ -123,9 +131,11 @@
                                 <button id="add-flight-btn" type="button" class="rounded-full border border-white/70 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-white/20">Add Another Flight</button>
                             </div>
                             <div id="flight-entries" class="grid gap-4">
+                                <!--data-repeat-entry tells JS that this block is a repeatable form item-->
                                 <div data-repeat-entry="flight" class="rounded-xl border border-white/25 bg-black/15 p-4 sm:p-5">
                                     <p data-entry-heading class="mb-3 text-sm font-semibold text-white">Flight</p>
                                     <div class="grid gap-4 sm:grid-cols-2">
+                                        <!--block of optional add-ons, structure repeats for all optional add-ons-->
                                         <label class="block">
                                             <span class="mb-2 block text-sm font-semibold text-white">Airline</span>
                                             <input type="text" name="flightAirline[]" placeholder="e.g., Delta" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
@@ -187,6 +197,34 @@
                                         <label class="block sm:col-span-2">
                                             <span class="mb-2 block text-sm font-semibold text-white">Other Important Info</span>
                                             <textarea rows="3" name="travelerImportantInfo[]" placeholder="Passport number, emergency contact, dietary needs, notes..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="optional-budget" class="hidden">
+                            <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                                <p class="text-sm font-semibold text-white">Budget Tracking</p>
+                                <button id="add-budget-btn" type="button" class="rounded-full border border-white/70 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-white/20">Add Another Budget Item</button>
+                            </div>
+                            <div id="budget-entries" class="grid gap-4">
+                                <div data-repeat-entry="budget" class="rounded-xl border border-white/25 bg-black/15 p-4 sm:p-5">
+                                    <p data-entry-heading class="mb-3 text-sm font-semibold text-white">Budget Item</p>
+                                    <div class="grid gap-4 sm:grid-cols-2">
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Category</span>
+                                            <input type="text" name="budgetTrackingCategory[]" placeholder="e.g., Food, transport, lodging" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Planned Amount</span>
+                                            <input type="text" name="budgetTrackingPlannedAmount[]" placeholder="e.g., $250" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                                        </label>
+
+                                        <label class="block sm:col-span-2">
+                                            <span class="mb-2 block text-sm font-semibold text-white">Notes</span>
+                                            <textarea rows="3" name="budgetTrackingNotes[]" placeholder="Receipts, payment method, refunds, reminders..." class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"></textarea>
                                         </label>
                                     </div>
                                 </div>

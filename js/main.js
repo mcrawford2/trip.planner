@@ -1,4 +1,9 @@
+//main.js, has largest chunks of AI generated content. All that was created by AI was still reviewed, tested, and understood by me.
+
+// DOM elements 
+// this section helps prevent repeating DOM queries later
 (() => {
+	//storageKey: stores item in browser sessionStorage under this key
 	const storageKey = "wanderplan.tripBuilder.formData";
 	const builderForm = document.querySelector("#trip-builder-form");
 	const itineraryView = document.querySelector("#itinerary-view");
@@ -14,6 +19,8 @@
 	const summaryOptionalLabel = document.querySelector("#summary-optional-label");
 	const travelerSection = document.querySelector("#traveler-info-section");
 	const travelerList = document.querySelector("#traveler-list");
+	const budgetSection = document.querySelector("#budget-info-section");
+	const budgetList = document.querySelector("#budget-list");
 	const flightSection = document.querySelector("#flight-info-section");
 	const flightList = document.querySelector("#flight-list");
 	const hotelSection = document.querySelector("#hotel-info-section");
@@ -23,6 +30,7 @@
 	const visaSection = document.querySelector("#visa-info-section");
 	const visaList = document.querySelector("#visa-list");
 
+	//arrays for optional add-on sectons
 	const flightArrayKeys = [
 		"flightAirline",
 		"flightNumber",
@@ -34,15 +42,18 @@
 	];
 	const destinationArrayKeys = ["destinationCity", "destinationCountry", "destinationStartDate", "destinationEndDate"];
 	const travelerArrayKeys = ["travelerName", "travelerPhone", "travelerImportantInfo"];
+	const budgetArrayKeys = ["budgetTrackingCategory", "budgetTrackingPlannedAmount", "budgetTrackingNotes"];
 	const hotelArrayKeys = ["hotelName", "hotelAddress", "hotelDates", "hotelCheckInDetails"];
 	const embassyArrayKeys = ["embassyAddress", "embassyEmergencyNumbers", "embassyHours"];
 	const visaArrayKeys = ["visaType", "visaValidityDates", "visaDocumentationNotes"];
 
+	//AI created, check for builder form and itinerary view, if neither element exists then script quits early
 	if (!builderForm && !itineraryView) {
 		return;
 	}
 
 	const getFields = (container) => container.querySelectorAll("input[name], textarea[name], select[name]");
+	//AI created, helps convert HTML elements to user-friendly text
 	const escapeHtml = (value) =>
 		String(value)
 			.replaceAll("&", "&amp;")
@@ -56,7 +67,7 @@
 			return "Not set yet";
 		}
 
-		const parsedDate = new Date(`${value}T00:00:00`);
+		//created by AI, for date values, attempts to parse and format them in a user-friendly way.
 		if (Number.isNaN(parsedDate.getTime())) {
 			return String(value);
 		}
@@ -71,6 +82,8 @@
 		const parsedDate = new Date(`${value}T00:00:00`);
 		return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
 	};
+
+	//AI created for top itinerary summary
 	const getArrayEntryCount = (savedData, keys) =>
 		keys.reduce((count, key) => {
 			const value = savedData?.[key];
@@ -85,9 +98,12 @@
 		const value = savedData?.[key];
 		return Array.isArray(value) ? value.some((item) => hasTextContent(item)) : hasTextContent(value);
 	});
+
+	//AI created, generates progress summary in top itinerary summary
 	const getOptionalSectionSummary = (savedData) => {
 		const sections = [
 			{ label: "Traveler Info", active: getSectionPresence(savedData, travelerArrayKeys) },
+			{ label: "Budget Tracking", active: getSectionPresence(savedData, budgetArrayKeys) },
 			{ label: "Flight Info", active: getSectionPresence(savedData, flightArrayKeys) },
 			{ label: "Hotel Info", active: getSectionPresence(savedData, hotelArrayKeys) },
 			{ label: "Embassy Info", active: getSectionPresence(savedData, embassyArrayKeys) },
@@ -102,6 +118,8 @@
 			labels: sections
 		};
 	};
+
+//AI created, processes destination data from saved form state
 	const buildDestinationEntries = (savedData) => {
 		const count = Math.max(getMaxArrayLength(savedData, destinationArrayKeys), hasTextContent(savedData?.destination) ? 1 : 0, hasTextContent(savedData?.startDate) || hasTextContent(savedData?.endDate) ? 1 : 0);
 		const entries = [];
@@ -127,6 +145,8 @@
 
 		return entries;
 	};
+
+	//AI created, calculates trip duration and formats date rnage for display
 	const getTripLengthSummary = (savedData) => {
 		const destinationEntries = buildDestinationEntries(savedData);
 		const startDate = destinationEntries.map((entry) => parseDateValue(entry.startDate)).find(Boolean) ?? parseDateValue(savedData?.startDate);
@@ -145,6 +165,8 @@
 
 		return { lengthLabel, rangeLabel };
 	};
+
+	//AI creates, helps with data that is stored as arrays
 	const getArrayValue = (savedData, key, index) =>
 		Array.isArray(savedData?.[key])
 			? String(savedData[key][index] ?? "")
@@ -167,6 +189,7 @@
 		}
 	};
 
+	//AI created, converts an HTML form's current field values into a JavaScript object for storage.
 	const readFormState = (form) => {
 		const formData = {};
 		const fields = getFields(form);
@@ -198,6 +221,7 @@
 		return formData;
 	};
 
+	//AI created, current form state to browser storage
 	const saveFormState = (form) => {
 		try {
 			sessionStorage.setItem(storageKey, JSON.stringify(readFormState(form)));
@@ -206,6 +230,7 @@
 		}
 	};
 
+	//AI created, populates form fields in itinerary with previously saved data from builder
 	const restoreFields = (container, savedData = getSavedData()) => {
 
 		if (!savedData) {
@@ -241,6 +266,7 @@
 		});
 	};
 
+	//refreshes headings
 	const refreshEntryHeadings = (entriesContainer, label) => {
 		const entries = entriesContainer?.querySelectorAll("[data-repeat-entry]") ?? [];
 		entries.forEach((entry) => {
@@ -251,6 +277,7 @@
 		});
 	};
 
+	//AI created, creates and manages delete buttons for repeatable entry rows
 	const refreshRepeatEntryControls = (entriesContainer, label) => {
 		const entries = entriesContainer?.querySelectorAll("[data-repeat-entry]") ?? [];
 		const shouldDisableRemoval = entries.length <= 1;
@@ -281,6 +308,7 @@
 		});
 	};
 
+	//AI helped, creates and appends a new repeatable entry row to a section
 	const addRepeatEntry = (entriesContainer, label, shouldFocus = true, canRemove = false) => {
 		if (!entriesContainer) {
 			return;
@@ -315,6 +343,7 @@
 		}
 	};
 
+	//AI created, for repeated entry sections when restoring form data
 	const ensureRepeatEntryCount = (entriesContainer, label, count) => {
 		if (!entriesContainer) {
 			return;
@@ -329,11 +358,13 @@
 		refreshEntryHeadings(entriesContainer, label);
 	};
 
+	//AI created, starts the function for rendering flight information on the itinerary page.
 	const renderFlightList = (savedData) => {
 		if (!flightSection || !flightList) {
 			return;
 		}
 
+		//AI helped, extracts flight data from saved form state and displays it on the itinerary page.
 		const count = getMaxArrayLength(savedData, flightArrayKeys);
 		const entries = [];
 		for (let index = 0; index < count; index += 1) {
@@ -379,6 +410,7 @@
 			.join("");
 	};
 
+	//AI helped, extracts destination data from saved form state and displays it on the itinerary page
 	const renderDestinationList = (savedData) => {
 		const destinationSection = document.querySelector("#destination-info-section");
 		const destinationList = document.querySelector("#destination-list");
@@ -413,6 +445,7 @@
 			.join("");
 	};
 
+	//AI helped, extracts traveler information from saved form state and displays it on the itinerary page.
 	const renderTravelerList = (savedData) => {
 		if (!travelerSection || !travelerList) {
 			return;
@@ -455,6 +488,50 @@
 			.join("");
 	};
 
+	//AI helped, extracts budget tracking data from saved form state and displays it on the itinerary page
+	const renderBudgetList = (savedData) => {
+		if (!budgetSection || !budgetList) {
+			return;
+		}
+
+		const count = getMaxArrayLength(savedData, budgetArrayKeys);
+		const entries = [];
+		for (let index = 0; index < count; index += 1) {
+			const entry = {
+				category: getArrayValue(savedData, "budgetTrackingCategory", index),
+				plannedAmount: getArrayValue(savedData, "budgetTrackingPlannedAmount", index),
+				notes: getArrayValue(savedData, "budgetTrackingNotes", index)
+			};
+
+			const hasContent = Object.values(entry).some((value) => hasTextContent(value));
+			if (hasContent) {
+				entries.push(entry);
+			}
+		}
+
+		if (entries.length === 0) {
+			budgetSection.classList.add("hidden");
+			budgetList.innerHTML = "";
+			return;
+		}
+
+		budgetSection.classList.remove("hidden");
+		budgetList.innerHTML = entries
+			.map(
+				(entry) => `
+				<div class="rounded-xl border border-white/20 bg-black/20 p-4 sm:p-5">
+					<p class="text-sm font-semibold uppercase tracking-[0.12em] text-white/80">Budget Item</p>
+					<div class="mt-3 grid gap-3 sm:grid-cols-2">
+						<div><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Category</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(entry.category || "Not set yet")}</p></div>
+						<div><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Planned Amount</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(entry.plannedAmount || "Not set yet")}</p></div>
+						<div class="sm:col-span-2"><p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Notes</p><p class="mt-1 whitespace-pre-wrap text-lg leading-relaxed text-white sm:text-2xl">${escapeHtml(entry.notes || "Not set yet")}</p></div>
+					</div>
+				</div>`
+			)
+			.join("");
+	};
+
+	//AI helped, Extracts hotel accommodation data from saved form state and displays it on the itinerary page
 	const renderHotelList = (savedData) => {
 		if (!hotelSection || !hotelList) {
 			return;
@@ -499,6 +576,7 @@
 			.join("");
 	};
 
+	//AI helped, extracts embassy information from saved form state and displays it on the itinerary page
 	const renderEmbassyList = (savedData) => {
 		if (!embassySection || !embassyList) {
 			return;
@@ -541,6 +619,7 @@
 			.join("");
 	};
 
+	//Ai helped, extracts visa information from saved form state and displays it on the itinerary page
 	const renderVisaList = (savedData) => {
 		if (!visaSection || !visaList) {
 			return;
@@ -583,6 +662,7 @@
 			.join("");
 	};
 
+	//AI created, displays the summary dashboard on the itinerary page, finds trip statistics and progress metrics.
 	const renderSummaryDashboard = (savedData) => {
 		if (!savedData) {
 			return;
@@ -627,6 +707,7 @@
 		}
 	};
 
+	//AI created, manages the visibility of optional sections. Shows/hides sections based on whether the user has entered any data to keep the itinerary page clean
 	const restoreDisplayFields = (container) => {
 		const savedData = getSavedData();
 		const optionalSections = container.querySelectorAll("[data-optional-section], [data-optional-fields]");
@@ -686,27 +767,33 @@
 		});
 	};
 
+	//AI added (but thoroughly checked, like all other AI added abilities), addEventListeners to form fields to trigger autosave on input/change, ensuring the itinerary page reflects the most up to date information.
 	const attachAutosave = (form) => {
 		form.addEventListener("input", () => saveFormState(form));
 		form.addEventListener("change", () => saveFormState(form));
 	};
 
+	//AI created. The following is a large conditional block that runs for the builder form to set up all interactions, restore saved data, and attach event listeners.
+	// DOM queries and caches
 	if (builderForm) {
 		const savedData = getSavedData();
 		const flightEntries = builderForm.querySelector("#flight-entries");
 		const destinationEntries = builderForm.querySelector("#destination-entries");
 		const travelerEntries = builderForm.querySelector("#traveler-entries");
+		const budgetEntries = builderForm.querySelector("#budget-entries");
 		const hotelEntries = builderForm.querySelector("#hotel-entries");
 		const embassyEntries = builderForm.querySelector("#embassy-entries");
 		const visaEntries = builderForm.querySelector("#visa-entries");
 		const optionalFlight = builderForm.querySelector("#optional-flight");
 		const optionalTraveler = builderForm.querySelector("#optional-traveler");
+		const optionalBudget = builderForm.querySelector("#optional-budget");
 		const optionalHotel = builderForm.querySelector("#optional-hotel");
 		const optionalEmbassy = builderForm.querySelector("#optional-embassy");
 		const optionalVisa = builderForm.querySelector("#optional-visa");
 		const optionalHealth = builderForm.querySelector("#optional-health");
 		const addDestinationButton = builderForm.querySelector("#add-destination-btn");
 		const addTravelerButton = builderForm.querySelector("#add-traveler-btn");
+		const addBudgetButton = builderForm.querySelector("#add-budget-btn");
 		const addFlightButton = builderForm.querySelector("#add-flight-btn");
 		const addHotelButton = builderForm.querySelector("#add-hotel-btn");
 		const addEmbassyButton = builderForm.querySelector("#add-embassy-btn");
@@ -714,6 +801,7 @@
 		const removableRepeatEntryLabels = new Map([
 			[flightEntries, "Flight"],
 			[travelerEntries, "Traveler"],
+			[budgetEntries, "Budget Item"],
 			[hotelEntries, "Hotel"],
 			[embassyEntries, "Embassy"],
 			[visaEntries, "Visa"]
@@ -721,6 +809,7 @@
 
 		ensureRepeatEntryCount(destinationEntries, "Destination", getMaxArrayLength(savedData, destinationArrayKeys));
 		ensureRepeatEntryCount(travelerEntries, "Traveler", getMaxArrayLength(savedData, travelerArrayKeys));
+		ensureRepeatEntryCount(budgetEntries, "Budget Item", getMaxArrayLength(savedData, budgetArrayKeys));
 		ensureRepeatEntryCount(flightEntries, "Flight", getMaxArrayLength(savedData, flightArrayKeys));
 		ensureRepeatEntryCount(hotelEntries, "Hotel", getMaxArrayLength(savedData, hotelArrayKeys));
 		ensureRepeatEntryCount(embassyEntries, "Embassy", getMaxArrayLength(savedData, embassyArrayKeys));
@@ -731,6 +820,7 @@
 
 		restoreFields(builderForm, savedData);
 
+		//show optional sections with user data
 		const hasFlightData = flightArrayKeys.some((key) => {
 			const value = savedData?.[key];
 			return Array.isArray(value) ? value.some((item) => hasTextContent(item)) : hasTextContent(value);
@@ -741,6 +831,14 @@
 		});
 		if (optionalTraveler && hasTravelerData) {
 			optionalTraveler.classList.remove("hidden");
+		}
+
+		const hasBudgetData = budgetArrayKeys.some((key) => {
+			const value = savedData?.[key];
+			return Array.isArray(value) ? value.some((item) => hasTextContent(item)) : hasTextContent(value);
+		});
+		if (optionalBudget && hasBudgetData) {
+			optionalBudget.classList.remove("hidden");
 		}
 		if (optionalFlight && hasFlightData) {
 			optionalFlight.classList.remove("hidden");
@@ -776,6 +874,7 @@
 
 		attachAutosave(builderForm);
 
+		//attaching event listeners for dynamic form interactions
 		const optionalToggleButtons = builderForm.querySelectorAll("[data-toggle-target]");
 		optionalToggleButtons.forEach((button) => {
 			button.addEventListener("click", () => {
@@ -842,6 +941,13 @@
 			});
 		}
 
+		if (addBudgetButton) {
+			addBudgetButton.addEventListener("click", () => {
+				addRepeatEntry(budgetEntries, "Budget Item", true, true);
+				saveFormState(builderForm);
+			});
+		}
+
 		if (addHotelButton) {
 			addHotelButton.addEventListener("click", () => {
 				addRepeatEntry(hotelEntries, "Hotel", true, true);
@@ -870,6 +976,7 @@
 		});
 	}
 
+	//AI created, runs for itinerary view, initializes with all data and sets up export functionality
 	if (itineraryView) {
 		restoreFields(itineraryView);
 		restoreDisplayFields(itineraryView);
@@ -878,6 +985,7 @@
 		renderSummaryDashboard(savedData);
 		renderDestinationList(savedData);
 		renderTravelerList(savedData);
+		renderBudgetList(savedData);
 		if (tripTitle) {
 			tripTitle.textContent = savedData?.tripName ? String(savedData.tripName) : "Your Itinerary";
 		}

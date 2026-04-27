@@ -143,3 +143,128 @@ button:active {
 .logo-animate {
     animation: pulse-glow 2s ease-in-out infinite;
 }
+
+/* PDF Export Styles */
+/* AI helped create this section to ensure the PDF export is clean and legible, with a white background and black text, and that it avoids common issues like content being cut off or colors not printing correctly. I tested the PDF export multiple timesafter implementing these styles to confirm they work as intended. */
+body.pdf-exporting {
+    background: #ffffff !important; 
+    color: #000000 !important;
+}
+
+body.pdf-exporting .print-hide {
+    display: none !important;
+}
+
+body.pdf-exporting,
+body.pdf-exporting * {
+    color: #000000 !important;
+    background: #ffffff !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+body.pdf-exporting .print-card,
+body.pdf-exporting #summary-dashboard article,
+body.pdf-exporting #itinerary-view article,
+body.pdf-exporting #itinerary-view div {
+    border-color: #000000 !important;
+    backdrop-filter: none !important;
+}
+
+body.pdf-exporting .print-card {
+    margin-top: 0 !important;
+    padding-top: 12px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+body.pdf-exporting .print-shell,
+body.pdf-exporting #summary-dashboard,
+body.pdf-exporting #itinerary-view,
+body.pdf-exporting #itinerary-view > article,
+body.pdf-exporting #itinerary-view > div {
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+body.pdf-exporting #summary-dashboard,
+body.pdf-exporting #itinerary-view {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+}
+
+body.pdf-exporting #summary-dashboard {
+    display: block !important;
+}
+
+body.pdf-exporting #itinerary-view {
+    display: block !important;
+}
+
+body.pdf-exporting #summary-dashboard > article,
+body.pdf-exporting #itinerary-view > article,
+body.pdf-exporting #itinerary-view > div {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 10px !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+}
+
+body.pdf-exporting #itinerary-view > div:last-child,
+body.pdf-exporting #itinerary-view > article:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Created by AI, applied styles only when printing or exporting to PDF. On screen experience remains unchanged but saved itinerary is clean and legible*/
+@media print {
+    body {
+        background: #ffffff;
+        color: #0f172a;
+    }
+
+    .print-hide {
+        display: none !important;
+    }
+
+    .print-shell {
+        max-width: none !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .print-card {
+        border: 1px solid #cbd5e1 !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+    }
+
+    #itinerary-view p {
+        color: #0f172a !important;
+    }
+
+    #summary-dashboard article,
+    #itinerary-view > article,
+    #itinerary-view > div {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    #summary-dashboard,
+    #itinerary-view {
+        display: block !important;
+    }
+
+    #summary-dashboard > article,
+    #itinerary-view > article,
+    #itinerary-view > div {
+        display: block !important;
+        width: 100% !important;
+    }
+}
