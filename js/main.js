@@ -68,6 +68,7 @@
 		}
 
 		//created by AI, for date values, attempts to parse and format them in a user-friendly way.
+		const parsedDate = new Date(`${value}T00:00:00`);
 		if (Number.isNaN(parsedDate.getTime())) {
 			return String(value);
 		}

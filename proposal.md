@@ -7,13 +7,13 @@ Travel planning for college students is often a messy and scattered process, wit
 # MVP vs. Stretch Goals: What is the minimum working version? What would you add if you have time?
 MVP:
 - Itinerary builder and budget tracker that takes inputs from users and can be modified
-- Interactive map that pins each activities and locations and visualize. Can also view the full travel route across trip days
-- Savability of the entire trip, and the ability to work on more than one trip at a time
+- Savability of the entire trip
 Stretch Goals:
+- Interactive map that pins each activities and locations and visualize. Can also view the full travel route across trip days
 - Packing list with checkboxes
 - Country info panel (currency, language, timezone) with the REST Countries API
 - The ability to export itinerary
 
 # What technologies do you plan to use? APIs, libraries, frameworks, etc.
-- Leaflet.js for interactive maps
+- Leaflet.js for interactive maps (stretch)
 - REST Countries API (stretch)
