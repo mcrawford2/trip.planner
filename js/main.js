@@ -9,6 +9,8 @@
 	const itineraryView = document.querySelector("#itinerary-view");
 	const tripTitle = document.querySelector("#trip-title");
 	const savePdfButton = document.querySelector("#save-pdf-btn");
+	const builderFormFeedback = document.querySelector("#builder-form-feedback");
+	const builderLoadingOverlay = document.querySelector("#builder-loading-overlay");
 	const summaryDestinations = document.querySelector("#summary-destinations");
 	const summaryTravelers = document.querySelector("#summary-travelers");
 	const summaryTripLength = document.querySelector("#summary-trip-length");
@@ -774,6 +776,43 @@
 		form.addEventListener("change", () => saveFormState(form));
 	};
 
+	const setBuilderFormFeedback = (message, tone = "info") => {
+		if (!builderFormFeedback) {
+			return;
+		}
+
+		builderFormFeedback.className = "sm:col-span-2 rounded-2xl border px-4 py-3 text-sm font-medium";
+		builderFormFeedback.classList.toggle("hidden", !message);
+
+		if (!message) {
+			builderFormFeedback.textContent = "";
+			return;
+		}
+
+		builderFormFeedback.textContent = message;
+
+		if (tone === "error") {
+			builderFormFeedback.classList.add("border-rose-300/40", "bg-rose-500/15", "text-rose-100");
+			return;
+		}
+
+		if (tone === "success") {
+			builderFormFeedback.classList.add("border-emerald-300/40", "bg-emerald-500/15", "text-emerald-100");
+			return;
+		}
+
+		builderFormFeedback.classList.add("border-white/20", "bg-white/10", "text-white/85");
+	};
+
+	const showBuilderLoadingOverlay = () => {
+		if (!builderLoadingOverlay) {
+			return;
+		}
+
+		builderLoadingOverlay.classList.remove("hidden");
+		builderLoadingOverlay.classList.add("flex");
+	};
+
 	//AI created. The following is a large conditional block that runs for the builder form to set up all interactions, restore saved data, and attach event listeners.
 	// DOM queries and caches
 	if (builderForm) {
@@ -799,6 +838,7 @@
 		const addHotelButton = builderForm.querySelector("#add-hotel-btn");
 		const addEmbassyButton = builderForm.querySelector("#add-embassy-btn");
 		const addVisaButton = builderForm.querySelector("#add-visa-btn");
+		const validationFields = builderForm.querySelectorAll("[required], input[min]");
 		const removableRepeatEntryLabels = new Map([
 			[flightEntries, "Flight"],
 			[travelerEntries, "Traveler"],
@@ -874,6 +914,24 @@
 		}
 
 		attachAutosave(builderForm);
+
+		validationFields.forEach((field) => {
+			field.addEventListener("invalid", () => {
+				field.setAttribute("aria-invalid", "true");
+				setBuilderFormFeedback("Please complete the required fields before creating your itinerary.", "error");
+			});
+
+			field.addEventListener("input", () => {
+				if (field.validity.valid) {
+					field.removeAttribute("aria-invalid");
+				}
+
+				const hasRemainingInvalidFields = Array.from(validationFields).some((item) => !item.validity.valid);
+				if (!hasRemainingInvalidFields) {
+					setBuilderFormFeedback("", "info");
+				}
+			});
+		});
 
 		//attaching event listeners for dynamic form interactions
 		const optionalToggleButtons = builderForm.querySelectorAll("[data-toggle-target]");
@@ -972,8 +1030,19 @@
 
 		builderForm.addEventListener("submit", (event) => {
 			event.preventDefault();
+
+			if (!builderForm.checkValidity()) {
+				builderForm.reportValidity();
+				setBuilderFormFeedback("Please complete the required fields before creating your itinerary.", "error");
+				return;
+			}
+
 			saveFormState(builderForm);
-			window.location.href = "itinerary.html";
+				setBuilderFormFeedback("Saving your trip and opening the itinerary...", "success");
+				showBuilderLoadingOverlay();
+			window.setTimeout(() => {
+				window.location.href = "itinerary.html";
+				}, 900);
 		});
 	}
 
